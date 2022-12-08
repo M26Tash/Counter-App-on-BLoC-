@@ -61,6 +61,7 @@ class _MyAppState extends State<MyApp> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              const SizedBox(height: 30,),
               Row(
                 children: [
                   IconButton(
