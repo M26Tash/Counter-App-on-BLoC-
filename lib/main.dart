@@ -1,6 +1,7 @@
 import 'package:bloc_counter/domain/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 void main() {
@@ -23,6 +24,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   CounterBloc block = CounterBloc();
+  
+  get prefs => null;
 
   @override
   void dispose() {
@@ -48,6 +51,19 @@ class _MyAppState extends State<MyApp> {
   brightness: Brightness.dark,
   useMaterial3: true
  );
+
+
+ getCountValue() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  int _currentCount = prefs.getInt('countValue') ?? 0;
+  print(prefs.get('countValue'));
+  return _currentCount;
+}
+
+  
+
+bool save = false;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -97,8 +113,19 @@ class _MyAppState extends State<MyApp> {
                       ),
                       tooltip: 'Reset Counter',
                     ),
+                  IconButton(
+                    onPressed: (){
+                      block.inputEvenrSink.add(CounterEvents.saveEvent);
+                    }, 
+                    icon: Icon(
+                      Icons.save,
+                      color: _themeBool ?  const Color(0xff191A1F) : Colors.white,
+                      ),
+                      tooltip: 'Save Counter',
+                    ),
                 ],
               ),
+              FloatingActionButton(onPressed: (){getCountValue();}),
               const Spacer(),
               StreamBuilder(
                     stream: block.outputStateStream,
@@ -122,11 +149,14 @@ class _MyAppState extends State<MyApp> {
                       }
                     }
                   ),
+                  // FloatingActionButton(onPressed: (){
+                  //   getCountValue();
+                  // }),
                 Text(
                   'Last saved num : 0',
                   style: TextStyle(
                     color: _themeBool ?  const Color(0xff191A1F) : Colors.white,
-                    fontSize: 20
+                    fontSize: 10
                   ),
                   ),
                   const Spacer(),
