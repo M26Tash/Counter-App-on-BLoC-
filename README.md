@@ -1,6 +1,6 @@
 # bloc_counter
 
-A new Flutter project.
+Simple flutter counter app based on BLoC with some function. This app is made purely for practice and consolidation of the material covered.
 
 ## Getting Started
 
